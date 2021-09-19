@@ -5,7 +5,7 @@
         <jet-banner />
 
         <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white border-b border-gray-100">
+            <nav class="bg-white border-b border-gray-300">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
@@ -21,6 +21,12 @@
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
+                                </jet-nav-link>
+                                <jet-nav-link :href="route('product.index')" :active="route().current('product.index')">
+                                    Product
+                                </jet-nav-link>
+                                <jet-nav-link :href="route('user.index')" :active="route().current('user.index')">
+                                    User
                                 </jet-nav-link>
                             </div>
                         </div>
@@ -217,14 +223,17 @@
             </nav>
 
             <!-- Page Heading -->
-            <header class="bg-white shadow" v-if="$slots.header">
+            <!-- <header class="bg-white shadow" v-if="$slots.header">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header"></slot>
                 </div>
-            </header>
+            </header> -->
 
             <!-- Page Content -->
             <main>
+                <div class="pt-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <slot name="header"></slot>
+                </div>
                 <slot></slot>
             </main>
         </div>
@@ -255,6 +264,36 @@
             JetNavLink,
             JetResponsiveNavLink,
             Link,
+        },
+        watch: {
+            '$page.props.flash': {
+                handler() {
+                    if (this.$page.props.flash.success) {
+                        this.$swal({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 5000,
+                            icon: 'success',
+                            title: '',
+                            text: this.$page.props.flash.success
+                        });
+                    } else if (this.$page.props.flash.error) {
+                        this.$swal({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 5000,
+                            icon: 'error',
+                            title: '',
+                            text: this.$page.props.flash.error
+                        });
+                    } else if (this.$page.props.flash.message) {
+                        console.log(this.$page.props.flash.message);
+                    }
+                },
+                deep: true,
+            },
         },
 
         data() {

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use App\Models\Produk;
 
 class ProductController extends Controller
 {
@@ -13,7 +15,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $data['list'] = Produk::orderBy('id','DESC')->paginate(10);
+        return Inertia::render('Product/Index', $data);
     }
 
     /**
@@ -23,7 +26,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Product/Create');
     }
 
     /**
@@ -34,7 +37,35 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'          => 'required',
+            'description'   => 'required',
+            'buy_price'     => 'required',
+            'sell_price'    => 'required',
+        ]);
+
+        $request->merge([
+            'image' => 'default.png',
+        ]);
+        if ($request->photo != null){
+            $request->validate([
+                'photo' => 'mimes:jpeg,jpg,png|max:5000',
+            ]);
+
+            $attachment = $request->file('photo');
+            $nama_file = time()."_".$attachment->getClientOriginalName();
+            $tujuan_upload = 'images';
+            $attachment->move($tujuan_upload,$nama_file);
+            $request->merge([
+                'image' => $nama_file,
+            ]);
+        }
+
+        $create = Produk::create($request->all());
+        if(isset($create->id)){
+            return redirect()->back()->with('success', 'Success');
+        }
+        return redirect()->back()->with('error', 'Failed');
     }
 
     /**
@@ -56,7 +87,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data['data'] = Produk::find($id);
+        return Inertia::render('Product/Edit', $data);
     }
 
     /**
@@ -68,7 +100,36 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name'          => 'required',
+            'description'   => 'required',
+            'buy_price'     => 'required',
+            'sell_price'    => 'required',
+        ]);
+
+        $data = Produk::find($id);
+
+        if ($request->photo != null){
+            $request->validate([
+                'photo' => 'mimes:jpeg,jpg,png|max:5000',
+            ]);
+
+            $attachment = $request->file('photo');
+            $nama_file = time()."_".$attachment->getClientOriginalName();
+            $tujuan_upload = 'images';
+            $attachment->move($tujuan_upload,$nama_file);
+            $data->image = $nama_file;
+        }
+
+        $data->name = $request->name;
+        $data->description = $request->description;
+        $data->buy_price = $request->buy_price;
+        $data->sell_price = $request->sell_price;
+
+        if($data->save()){
+            return redirect()->back()->with('success', 'Success');
+        }
+        return redirect()->back()->with('error', 'Failed');
     }
 
     /**
@@ -79,6 +140,10 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (Produk::findOrfail($id)->delete()){
+            return redirect()->back()->with('success', 'Success');
+        } else {
+            return redirect()->back()->with('error', 'Failed');
+        }
     }
 }

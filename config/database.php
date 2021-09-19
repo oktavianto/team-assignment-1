@@ -3,7 +3,9 @@
 use Illuminate\Support\Str;
 
 $url = parse_url(getenv("DATABASE_URL"));
-
+if (!$url['path']) {
+    $url = parse_url("postgres://lytfjiirvvavco:6f43c46c6f42bce82b783895cb5ece11cc80d00455cceec1ce2855fbad03eb59@ec2-44-198-151-32.compute-1.amazonaws.com:5432/d497vp4h7o7ls7");
+}
 $host = $url["host"];
 $username = $url["user"];
 $password = $url["pass"];
