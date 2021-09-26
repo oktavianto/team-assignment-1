@@ -48,7 +48,7 @@ class UserController extends Controller
         ]);
 
         $request->merge([
-            'password' => bcrypt('password'),
+            'password' => bcrypt($request->password),
         ]);
 
         $create = User::create($request->all());

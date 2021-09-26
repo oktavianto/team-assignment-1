@@ -35,7 +35,7 @@
                                     <div class="flex align-middle">
                                         <img :src="data.profile_photo_url" class="rounded-full w-12 h-12"/>
                                         <div class="ml-3 mt-1">
-                                            <div class="text-xs text-gray-400">#{{ data.id }}</div>
+                                            <div class="text-xs text-gray-400">#{{ data.id }} <span v-if="data.role == 'admin'" class="text-blue-500">Administrator</span></div>
                                             <div>{{ data.name }}</div>
                                         </div>
                                     </div>
