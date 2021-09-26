@@ -26,6 +26,7 @@ class ProductController extends Controller
      */
     public function create()
     {
+        auth()->user()->isAdmin();
         return Inertia::render('Product/Create');
     }
 
@@ -37,6 +38,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        auth()->user()->isAdmin();
         $request->validate([
             'name'          => 'required',
             'description'   => 'required',
@@ -87,6 +89,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        auth()->user()->isAdmin();
         $data['data'] = Produk::find($id);
         return Inertia::render('Product/Edit', $data);
     }
@@ -100,6 +103,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        auth()->user()->isAdmin();
         $request->validate([
             'name'          => 'required',
             'description'   => 'required',
@@ -140,6 +144,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+        auth()->user()->isAdmin();
         if (Produk::findOrfail($id)->delete()){
             return redirect()->back()->with('success', 'Success');
         } else {
