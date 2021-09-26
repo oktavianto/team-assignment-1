@@ -46,6 +46,15 @@
 				</select>
 				<input-error :message="form.errors.sex" class="mt-2" />
 			</div>
+			<div class="w-full">
+				<Label for="role" value="Role" />
+				<select class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full" v-model="form.role">
+					<option :value="null" />
+					<option value="user">User</option>
+					<option value="admin">Administrator</option>
+				</select>
+				<input-error :message="form.errors.role" class="mt-2" />
+			</div>
 		</div>
 		<div class="mt-5 text-right md:space-x-3 md:block flex flex-col-reverse">
 			<Button type="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" @click="submit">Save</Button>

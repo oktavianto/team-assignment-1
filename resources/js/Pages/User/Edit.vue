@@ -20,6 +20,7 @@
                     '_method': 'PUT',
                     name: this.data.name,
                     email: this.data.email,
+                    role: this.data.role,
                     password: this.data.password,
                     password_confirmation: this.data.password_confirmation,
                     birthday: this.data.birthday,

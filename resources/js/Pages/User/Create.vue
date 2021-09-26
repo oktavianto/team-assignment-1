@@ -19,6 +19,7 @@
                     '_method': 'POST',
                     name: null,
                     email: null,
+                    role: 'user',
                     password: null,
                     password_confirmation: null,
                     birthday: null,
