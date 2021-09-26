@@ -26,6 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        auth()->user()->isAdmin();
         return Inertia::render('User/Create');
     }
 
@@ -37,12 +38,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        auth()->user()->isAdmin();
         $request->validate([
             'name'                  => 'required',
             'email'                 => 'required|email',
             'role'                  => 'required',
             'password'              => 'required|min:6',
             'password_confirmation' => 'required_with:password|same:password|min:6',
+        ]);
+
+        $request->merge([
+            'password' => bcrypt('password'),
         ]);
 
         $create = User::create($request->all());
@@ -71,6 +77,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        auth()->user()->isAdmin();
         $data['data'] = User::find($id);
         return Inertia::render('User/Edit', $data);
     }
@@ -84,6 +91,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        auth()->user()->isAdmin();
         $request->validate([
             'name'  => 'required',
         ]);
@@ -96,7 +104,7 @@ class UserController extends Controller
                 'password_confirmation' => 'required_with:password|same:password|min:6',
             ]);
 
-            $data->password = bcrypt($data->password);
+            $data->password = bcrypt($request->password);
         }
 
         $data->name = $request->name;
@@ -119,6 +127,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        auth()->user()->isAdmin();
         if (User::findOrfail($id)->delete()){
             return redirect()->back()->with('success', 'Success');
         } else {
