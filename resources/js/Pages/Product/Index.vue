@@ -6,7 +6,7 @@
                     Product Management
                 </h1>
                 <div>
-                    <Link :href="route('product.create')" class="px-5 py-3 rounded-xl text-sm font-medium text-white bg-blue-600 hover:bg-blue-800 active:bg-grey-900 focus:outline-none border-4 border-white focus:border-blue-200 transition-all align-middle self-center inline-flex"><PlusCircleIcon class="h-5 w-5 mr-2 text-xl self-center"/> <span class="self-center">New</span></Link>
+                    <Link :href="route('product.create')" class="px-5 py-3 rounded-xl text-sm font-medium text-white bg-blue-600 hover:bg-blue-800 active:bg-grey-900 focus:outline-none border-4 border-white focus:border-blue-200 transition-all align-middle self-center inline-flex"><PlusCircleIcon class="h-5 w-5 mr-2 text-xl self-center"/> <span class="self-center" v-if="$page.props.user.role == 'admin'">New</span></Link>
                 </div>
             </div>
         </template>
@@ -26,7 +26,7 @@
                                 <th class="py-4 px-6 bg-white text-sm text-gray-600 border-b border-gray-300">Product</th>
                                 <th class="py-4 px-6 bg-white text-sm text-gray-600 border-b border-gray-300">Description</th>
                                 <th class="py-4 px-6 bg-white text-sm text-gray-600 border-b border-gray-300">Price</th>
-                                <th class="py-4 px-6 bg-white text-sm text-gray-600 border-b border-gray-300">Actions</th>
+                                <th class="py-4 px-6 bg-white text-sm text-gray-600 border-b border-gray-300" v-if="$page.props.user.role == 'admin'">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,7 +51,7 @@
                                         <span class="inline-block rounded-min text-yellow-600 bg-yellow-200 px-2 py-1 text-xs font-bold mr-3 rounded">Sell: Rp{{ data.sell_price }}</span>
                                     </div>
                                 </td>
-                                <td class="py-4 px-6 border-gray-300 align-middle">
+                                <td class="py-4 px-6 border-gray-300 align-middle" v-if="$page.props.user.role == 'admin'">
                                     <div class="inline-flex">
                                         <Link :href="route('product.edit', data.id)" class="text-gray-600 font-bold py-1 px-3 rounded text-xs hover:text-blue-500"><PencilIcon class="w-5 h-5"/></Link>
                                         <button class="text-red-600 font-bold py-1 px-3 rounded text-xs hover:text-red-500" @click="destroy(data.id)"><TrashIcon class="w-5 h-5"/></button>
