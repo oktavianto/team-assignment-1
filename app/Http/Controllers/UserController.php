@@ -40,6 +40,7 @@ class UserController extends Controller
         $request->validate([
             'name'                  => 'required',
             'email'                 => 'required|email',
+            'role'                  => 'required',
             'password'              => 'required|min:6',
             'password_confirmation' => 'required_with:password|same:password|min:6',
         ]);
@@ -99,6 +100,7 @@ class UserController extends Controller
         }
 
         $data->name = $request->name;
+        $data->role = $request->role;
         $data->birthplace = $request->birthplace;
         $data->birthday = $request->birthday;
         $data->sex = $request->sex;
