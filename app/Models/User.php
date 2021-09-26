@@ -54,4 +54,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function isAdmin()
+    {
+        return ($this->role != "admin") ? abort(401, $this->name." Kamu Tidak Mempunyai Akses.") : true;
+    }
 }
