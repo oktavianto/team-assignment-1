@@ -57,6 +57,6 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return ($this->role != "admin") ? abort(401, $this->name." Kamu Tidak Mempunyai Akses.") : true;
+        return ($this->role != "admin") ? abort(401) : true;
     }
 }
